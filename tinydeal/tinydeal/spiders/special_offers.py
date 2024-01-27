@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#Improted scarpy package
 import scrapy
 
 
@@ -10,7 +10,7 @@ class SpecialOffersSpider(scrapy.Spider):
         yield scrapy.Request(url='https://web.archive.org/web/20190324163700/http://www.tinydeal.com/specials.html', callback=self.parse, headers={
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'
         })
-
+   #use xpath to get product
     def parse(self, response):
         for product in response.xpath("//ul[@class='productlisting-ul']/div/li"):
             yield {
@@ -20,7 +20,7 @@ class SpecialOffersSpider(scrapy.Spider):
                 'original_price': product.xpath(".//div[@class='p_box_price']/span[2]/text()").get(),
                 'User-Agent': response.request.headers['User-Agent']
             }
-
+        #scraping multiple pages till last page
         next_page = response.xpath("//a[@class='nextPage']/@href").get()
 
         if next_page:
